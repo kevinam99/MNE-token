@@ -6,6 +6,7 @@ contract MneToken {
     string public name = "La Monnaie";
     string public symbol = "MNE";
     string public standard = "La Monnaie v1.0";
+    uint8 public decimals = 10;
     uint256 public totalSupply;
     
     mapping(address => uint256) public balanceOf; // think of this like a hash map
