@@ -51,8 +51,8 @@ contract("MneToken", accounts => {
             const initialSenderBal = await tokenInstance.balanceOf(sender)
             const receiver = accounts[1]
             const initialReceiverBal = await tokenInstance.balanceOf(receiver)
-            const receipt = await tokenInstance.transfer(receiver, 200, { from: sender })
-            assert.equal(receipt.receipt.status, true, "tokens transferred successfully")
+            const transfer = await tokenInstance.transfer(receiver, 200, { from: sender })
+            assert.equal(transfer.receipt.status, true, "tokens transferred successfully")
             const receiverBal = await tokenInstance.balanceOf(receiver)
             assert.equal(receiverBal.toNumber(), initialReceiverBal.toNumber() + 200, "adds the amount to receiver account")
             const senderBal = await tokenInstance.balanceOf(sender)
