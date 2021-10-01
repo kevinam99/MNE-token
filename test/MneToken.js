@@ -19,6 +19,8 @@ contract("MneToken", accounts => {
             assert.equal(tokenSymbol, "MNE", "has the cirrect symbol: MNE")
             const tokenStandard = await tokenInstance.standard()
             assert.equal(tokenStandard, "La Monnaie v1.0", "has the correct standard: v1.0")
+            const tokenDecimals = await tokenInstance.decimals()
+            assert.equal(tokenDecimals, 5, "has the correct decimals")
         }
         catch(error) {
             console.error(error)
@@ -51,13 +53,19 @@ contract("MneToken", accounts => {
             const initialSenderBal = await tokenInstance.balanceOf(sender)
             const receiver = accounts[1]
             const initialReceiverBal = await tokenInstance.balanceOf(receiver)
-            const amount = 200
-            const transfer = await tokenInstance.transfer(receiver, amount, { from: sender })
-            assert.equal(transfer.receipt.status, true, "tokens transferred successfully")
-            const receiverBal = await tokenInstance.balanceOf(receiver)
-            assert.equal(receiverBal.toNumber(), initialReceiverBal.toNumber() + amount, "adds the amount to receiver account")
-            const senderBal = await tokenInstance.balanceOf(sender)
-            assert.equal(senderBal.toNumber(), initialSenderBal.toNumber() - amount, "deducts the amount sent to receiver account")
+            const amount = 20000
+            const transactionStatus = await tokenInstance.transfer.call(receiver, amount, { from: sender })
+            assert.equal(transactionStatus, true, "tokens transferred successfully")
+            const transaction = await tokenInstance.transfer(receiver, amount, { from: sender })
+            assert.equal(transaction.logs.length, 1, "triggers an event")
+            assert.equal(transaction.logs[0].event, "Transfer", `should be the "Transfer" event`)
+            assert.equal(transaction.logs[0].args._from, sender, "logs tokens transferred from")
+            assert.equal(transaction.logs[0].args._to, receiver, "logs tokens transferred to")
+            assert.equal(transaction.logs[0].args._value, amount, "logs the transfer amount")
+            const currentReceiverBal = await tokenInstance.balanceOf(receiver)
+            assert.equal(currentReceiverBal.toNumber(), initialReceiverBal.toNumber() + amount, "adds the amount to receiver account")
+            const currentSenderBal = await tokenInstance.balanceOf(sender)
+            assert.equal(currentSenderBal.toNumber(), initialSenderBal.toNumber() - amount, "deducts the amount sent to receiver account")
         }
         catch(error) {
             console.error(error)

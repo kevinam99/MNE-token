@@ -6,8 +6,14 @@ contract MneToken {
     string public name = "La Monnaie";
     string public symbol = "MNE";
     string public standard = "La Monnaie v1.0";
-    uint8 public decimals = 10;
+    uint8 public decimals = 5;
     uint256 public totalSupply;
+
+    event Transfer(
+        address indexed _from,
+        address indexed _to,
+        uint256 _value
+    );
     
     mapping(address => uint256) public balanceOf; // think of this like a hash map
 
@@ -24,6 +30,8 @@ contract MneToken {
         require(balanceOf[msg.sender] >= _value);
         balanceOf[msg.sender]-= _value;
         balanceOf[_to]+= _value;
+ 
+        emit Transfer(msg.sender, _to, _value);
         return true; 
     }
 }
