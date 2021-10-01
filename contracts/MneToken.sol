@@ -4,7 +4,7 @@ pragma solidity >=0.4.2;
 
 contract MneToken {
     uint256 public totalSupply;
-    constructor()  public {
+    constructor() public {
         totalSupply = 1000000; // allowing a total supply of 1,000,000 coins
     }
 }
