@@ -11,6 +11,7 @@ contract MneToken {
     uint8 public decimals = 5;
     uint256 public totalSupply;
 
+    // `owner` approves `spender` to transfer `value` MNE tokens
     event Approval(
         address indexed _owner,
         address indexed _spender,
@@ -24,6 +25,8 @@ contract MneToken {
     );
     
     mapping(address => uint256) public balanceOf; // think of this like a hash map
+    mapping(address => mapping(address => uint256)) public allowance;
+    // maps owner address to a nested mapping of approved address and value.
 
     constructor(uint256 _initial_supply) public {
         balanceOf[msg.sender] = _initial_supply; // sender - the address that calls this function
@@ -35,17 +38,27 @@ contract MneToken {
     }
 
     function approve(address _spender, uint256 _value) public returns (bool success) {
-        require(balanceOf[_spender] >= _value, "Spender must have sufficient funds.");
-        // balanceOf[_spender]-= _value;
+        allowance[msg.sender][_spender] = _value;
+        emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
-        require(balanceOf[msg.sender] >= _value, "Sender must have sufficient tokens to transfer.");
         balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value);
         balanceOf[_to] = balanceOf[_to].add(_value);
  
         emit Transfer(msg.sender, _to, _value);
         return true; 
+    }
+
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
+        require(balanceOf[_from] >= _value, "Sender must have sufficient tokens to transfer.");
+        require(allowance[_from][msg.sender] >= _value);
+        balanceOf[_from] = balanceOf[_from].sub(_value);
+        balanceOf[_to] =  balanceOf[_to].add(_value);
+
+        allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
+        emit Transfer(_from, _to, _value);
+        return true;
     }
 }
