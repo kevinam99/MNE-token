@@ -31,9 +31,9 @@ contract("MneToken", accounts => {
     it("allocates the initial supply on deployment", async () => {
         try{
             const totalSupply = await tokenInstance.totalSupply()
-            assert.equal(totalSupply.toNumber(), 1000000, "sets the supply to 1,000,000")
+            assert.equal(totalSupply.toNumber(), 100000000, "sets the supply to 1,000,000")
             const senderBalance = await tokenInstance.balanceOf(accounts[0])
-            assert.equal(senderBalance.toNumber(), 1000000, "allocates the initial supply to the admin account.")
+            assert.equal(senderBalance.toNumber(), 100000000, "allocates the initial supply to the admin account.")
         }
         catch(error) {
             console.error(error)

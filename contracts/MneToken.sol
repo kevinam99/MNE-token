@@ -33,6 +33,7 @@ contract MneToken {
         // the test to check total supply fails when the balance of the the 
         // sender is not set.
         totalSupply = _initial_supply;
+        emit Transfer(address(0), msg.sender, totalSupply);
         // allocate initial supply
         
     }

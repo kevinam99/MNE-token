@@ -2,7 +2,7 @@ contracts/.placeholder
 test/.placeholder
 build
 deploy_mnemonic.key
-
+.secret
 # Logs
 logs
 *.log
