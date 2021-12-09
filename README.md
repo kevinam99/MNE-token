@@ -6,6 +6,8 @@ This is an ERC20 token that I created as a project to learn about the Ethereum e
 
 **The contract address is [0x572f7a3b4a97c837e3ad0da1322139eba07b1848](https://goerli.etherscan.io/token/0x572f7a3b4a97c837e3ad0da1322139eba07b1848?a=0x89811603161fCFaF010f1b9442ac470a81e54D8A). Anything other than this does not belong to me.**
 
+This token has been written from scratch, but I like how Openzeppelin allows to do much more, with less effort. I might try that for the next project. 
+
 ## Concept
 We know the adage that time is money. However, money, once lost, can be recovered but not time. 
 
